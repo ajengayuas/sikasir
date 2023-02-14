@@ -351,9 +351,10 @@ Detail Data Penjualan
                 if (result.isConfirmed) {
                     $.ajax({
                         type: "post",
-                        url: "{!! url('hapusinv') !!}" + "/" + noinv,
+                        url: "{!! url('hapusinv') !!}",
                         data: {
-                            "_token": "{{ csrf_token() }}"
+                            "_token": "{{ csrf_token() }}",
+                            noinv: noinv
                         },
                         dataType: "json",
                         success: function(response) {

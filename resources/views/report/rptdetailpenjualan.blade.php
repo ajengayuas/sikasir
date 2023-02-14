@@ -339,12 +339,14 @@
 
         $('body').on('click', '#btnprint', function() {
             let noinv = $(this).attr('data-id');
-            window.open("{!! url('cetakrpt') !!}" + "/" + noinv, "_blank");
+            let encryptinv = window.btoa(noinv);
+            window.open("{!! url('cetakrpt') !!}" + "/" + encryptinv, "_blank");
         });
 
         $('#btncetak').click(function(e) {
             let noinv = $('#noinv').text();
-            window.open("{!! url('cetakrpt') !!}" + "/" + noinv, "_blank");
+            let encryptinv = window.btoa(noinv);
+            window.open("{!! url('cetakrpt') !!}" + "/" + encryptinv, "_blank");
         });
 
     })

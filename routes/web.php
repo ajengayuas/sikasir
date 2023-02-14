@@ -82,12 +82,12 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('/rptdetailpenjualan', [ReportController::class, 'detail'])->name('dtlpenjualan');
     Route::get('/detailpenjualan', [ReportController::class, 'detailjual'])->name('detailpenjualan');
     Route::get('/detailjual', [ReportController::class, 'viewdetailjual'])->name('detailjual');
-    Route::get('/cetakrpt/{noinv}', [ReportController::class, 'cetak'])->name('cetakrpt')->where('noinv', '(.*)');
+    Route::get('/cetakrpt', [ReportController::class, 'cetak'])->name('cetakrpt');
     Route::get('/datakeu', [ReportController::class, 'viewdatakeu'])->name('datakeu');
     Route::get('/listdatakeu', [ReportController::class, 'listdatakeu'])->name('listdatakeu');
     Route::get('/kredit', [ReportController::class, 'viewkredit'])->name('kredit');
     Route::get('/detailkredit', [ReportController::class, 'detailkredit'])->name('detailkredit');
-    Route::post('/hapusinv/{noinv?}', [ReportController::class, 'destroyinv'])->name('hapusinv')->where('noinv', '(.*)');
+    Route::post('/hapusinv', [ReportController::class, 'destroyinv'])->name('hapusinv');
     Route::post('/getlaba', [ReportController::class, 'getamount'])->name('getlaba');
     Route::get('/rptproduk', [ReportController::class, 'viewproduk'])->name('rptproduk');
     Route::get('/daftarharga', [ReportController::class, 'daftarharga'])->name('daftarharga');

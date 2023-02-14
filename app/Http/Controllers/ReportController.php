@@ -116,16 +116,15 @@ class ReportController extends Controller
         }
     }
 
-    public function cetak($noinv = null)
+    public function cetak($noinv)
     {
-        if ($noinv) {
-            $datacetak = DataKasir::select('data_produks.nama', 'data_kasirs.*', 'trans_lunas.bayar As bayardp', 'trans_lunas.lunas As lunasdp')
-                ->join('data_produks', 'data_kasirs.idproduk', 'data_produks.id')
-                ->leftjoin('trans_lunas', 'data_kasirs.noinv', 'trans_lunas.noinv')
-                ->where('data_kasirs.noinv', $noinv)
-                ->get();
-            return view('report.printstruckrpt')->with('data', $datacetak);
-        }
+        $decryptinv = base64_decode($noinv);
+        $datacetak = DataKasir::select('data_produks.nama', 'data_kasirs.*', 'trans_lunas.bayar As bayardp', 'trans_lunas.lunas As lunasdp')
+            ->join('data_produks', 'data_kasirs.idproduk', 'data_produks.id')
+            ->leftjoin('trans_lunas', 'data_kasirs.noinv', 'trans_lunas.noinv')
+            ->where('data_kasirs.noinv', $decryptinv)
+            ->get();
+        return view('report.printstruckrpt')->with('data', $datacetak);
     }
 
     public function viewdatakeu()
@@ -204,19 +203,19 @@ class ReportController extends Controller
         }
     }
 
-    public function destroyinv($noinv)
+    public function destroyinv(Request $request)
     {
         DB::beginTransaction();
         $updatedby = Session::get('usernamelogin');
-        $delete = DataKasir::where('noinv', $noinv)->update([
+        $delete = DataKasir::where('noinv', $request->noinv)->update([
             'aktif' => 0,
             'updated_at' => date('Y-m-d H:i:s'),
             'updated_by' => $updatedby
         ]);
-        $cekinv = TransLunas::where('noinv', $noinv)->first();
+        $cekinv = TransLunas::where('noinv', $request->noinv)->first();
         $delete2 = 0;
         if ($cekinv != null) {
-            $delete2 = TransLunas::where('noinv', $noinv)->update([
+            $delete2 = TransLunas::where('noinv', $request->noinv)->update([
                 'aktif' => 0,
                 'updated_at' => date('Y-m-d H:i:s'),
                 'updated_by' => $updatedby
