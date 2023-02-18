@@ -14,7 +14,7 @@ return new class extends Migration
     public function up()
     {
         Schema::table('data_kasirs', function (Blueprint $table) {
-            $table->string('ket')->nullable();
+            $table->string('ket')->default('');
         });
     }
 
