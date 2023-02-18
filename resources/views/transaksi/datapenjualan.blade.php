@@ -261,8 +261,8 @@ Detail Data Penjualan
                         name: 'DT_RowIndex'
                     },
                     {
-                        data: 'nama',
-                        name: 'nama'
+                        data: 'name',
+                        name: 'name'
                     },
                     {
                         data: 'qty',

@@ -72,7 +72,7 @@ class LunasController extends Controller
     public function listprodukdp(Request $request)
     {
 
-        $data = DataKasir::select('data_kasirs.*', 'data_produks.nama', 'trans_lunas.bayar As bayardp', 'trans_lunas.aktif As aktiflunas')
+        $data = DataKasir::select(DB::raw("CONCAT(data_produks.nama,' ',data_kasirs.ket) as name"), 'data_kasirs.*', 'trans_lunas.bayar As bayardp', 'trans_lunas.aktif As aktiflunas')
             ->join('data_produks', 'data_kasirs.idproduk', '=', 'data_produks.id')
             ->leftjoin('trans_lunas', 'data_kasirs.noinv', '=', 'trans_lunas.noinv')
             ->where('data_kasirs.dp', 1)

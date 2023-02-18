@@ -32,7 +32,7 @@ class ReportController extends Controller
     public function listjual(Request $request)
     {
         if ($request->ajax()) {
-            $data = DataKasir::select(DB::raw('DATE_FORMAT(data_kasirs.created_at, "%d-%m-%Y") as at'), 'data_kasirs.noinv', 'data_kasirs.qty', 'data_kasirs.satuan', 'data_kasirs.harga', 'data_kasirs.amount', 'data_produks.nama')
+            $data = DataKasir::select(DB::raw("DATE_FORMAT(data_kasirs.created_at, '%d-%m-%Y') as at,CONCAT(data_produks.nama,' ',data_kasirs.ket) as name"), 'data_kasirs.noinv', 'data_kasirs.qty', 'data_kasirs.satuan', 'data_kasirs.harga', 'data_kasirs.amount')
                 ->join('data_produks', 'data_kasirs.idproduk', 'data_produks.id')
                 ->where('data_kasirs.aktif', 1)
                 ->whereBetween('data_kasirs.created_at', [Carbon::parse($request->date1)->startOfDay(), Carbon::parse($request->date2)->endOfDay()])
@@ -105,7 +105,7 @@ class ReportController extends Controller
     public function viewdetailjual(Request $request)
     {
         if ($request->ajax()) {
-            $data = DataKasir::select(DB::raw('DATE_FORMAT(data_kasirs.created_at, "%d %M %Y %h:%m:%d") as at'), 'data_kasirs.noinv', 'data_kasirs.kepada', 'data_kasirs.dp', 'data_kasirs.lunas', 'data_kasirs.totalamount', 'data_kasirs.diskon', 'data_kasirs.totalamountdiskon', 'data_kasirs.bayar', 'data_kasirs.qty', 'data_kasirs.satuan', 'data_kasirs.amount', 'data_kasirs.harga', 'data_produks.nama', 'trans_lunas.bayar as bayarlunas')
+            $data = DataKasir::select(DB::raw("DATE_FORMAT(data_kasirs.created_at, '%d %M %Y %h:%m:%d') as at,CONCAT(data_produks.nama,' ',data_kasirs.ket) as name"), 'data_kasirs.noinv', 'data_kasirs.kepada', 'data_kasirs.dp', 'data_kasirs.lunas', 'data_kasirs.totalamount', 'data_kasirs.diskon', 'data_kasirs.totalamountdiskon', 'data_kasirs.bayar', 'data_kasirs.qty', 'data_kasirs.satuan', 'data_kasirs.amount', 'data_kasirs.harga', 'trans_lunas.bayar as bayarlunas')
                 ->join('data_produks', 'data_kasirs.idproduk', 'data_produks.id')
                 ->leftjoin('trans_lunas', 'data_kasirs.noinv', 'trans_lunas.noinv')
                 ->where('data_kasirs.noinv', $request->inv)

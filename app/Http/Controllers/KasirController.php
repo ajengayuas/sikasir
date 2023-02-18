@@ -48,7 +48,7 @@ class KasirController extends Controller
 
     public function listtempkasir(Request $request)
     {
-        $data = DataTempKasir::select('data_produks.nama', 'temp_kasirs.satuan', 'temp_kasirs.harga', 'temp_kasirs.qty', 'temp_kasirs.id', 'temp_kasirs.amount')
+        $data = DataTempKasir::select(DB::raw("CONCAT(data_produks.nama,' ',temp_kasirs.ket) as name"), 'temp_kasirs.satuan', 'temp_kasirs.harga', 'temp_kasirs.qty', 'temp_kasirs.id', 'temp_kasirs.amount',)
             ->join('data_produks', 'temp_kasirs.idproduk', '=', 'data_produks.id')
             ->where('temp_kasirs.created_by', Session::get('usernamelogin'))
             ->where('data_produks.aktif', 1)
@@ -80,6 +80,13 @@ class KasirController extends Controller
 
     public function storetemp(Request $request)
     {
+        $keterangan = '';
+        if ($request->ket == null) {
+            $keterangan = '';
+        } else {
+            $keterangan = $request->ket;
+        }
+
         $created_by = Session::get('usernamelogin');
         $cekdata = DataTempKasir::where('idproduk', $request->nama)
             ->where('satuan', $request->satuan)
@@ -98,7 +105,8 @@ class KasirController extends Controller
                     'amount' => ($cekdata->qty + $request->qty) * $request->harga,
                     'amountbeli' => ($cekdata->qty + $request->qty) * $cekdata->hargabeli,
                     'updated_at' => date('Y-m-d H:i:s'),
-                    'updated_by' => $created_by
+                    'updated_by' => $created_by,
+                    'ket' => $cekdata->ket . ', ' . $keterangan
                 ]);
             if ($update) {
                 $status = ['title' => 'Sukses!', 'status' => 'success', 'message' => 'Data Berhasil Disimpan'];
@@ -127,7 +135,8 @@ class KasirController extends Controller
             'amountbeli'   => $amountbeli,
             'aktif'    => 1,
             'created_at' => date('Y-m-d H:i:s'),
-            'created_by' => $created_by
+            'created_by' => $created_by,
+            'ket' => $keterangan
         ]);
 
         if ($savetemp) {
@@ -215,7 +224,8 @@ class KasirController extends Controller
                 'kurangkembali' => $request->kekurangan,
                 'aktif'     => 1,
                 'created_at' => date('Y-m-d H:i:s'),
-                'created_by' => $created_by
+                'created_by' => $created_by,
+                'ket'   => $val->ket,
             ]);
 
             $update = DataTempKasir::where('id', $val->id)->update([

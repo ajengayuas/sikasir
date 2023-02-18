@@ -72,8 +72,8 @@
                     name: 'noinv'
                 },
                 {
-                    data: 'nama',
-                    name: 'nama'
+                    data: 'name',
+                    name: 'name'
                 },
                 {
                     data: 'qty',

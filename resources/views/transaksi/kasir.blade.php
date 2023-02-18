@@ -30,11 +30,14 @@ Proses Transaksi
                                         <option value=""></option>
                                     </select>
                                 </td>
-                                <td colspan="2">
+                                <td>
                                     <select class="form-control select2" id="satuan" name="satuan" style="width: 100px;">
                                         <option value="pcs">PCS</option>
                                         <option value="pack">PACK</option>
                                     </select>
+                                </td>
+                                <td>
+                                    <input type="text" class="form-control" id="ket" placeholder="Keterangan" name="ket" style="width: 450px;">
                                 </td>
                             </tr>
                             <tr>
@@ -167,7 +170,6 @@ Proses Transaksi
         amount();
 
         $("#nama").select2({
-            tags: true,
             placeholder: '-- Pilih Produk --',
             ajax: {
                 url: "{{route('getproduk')}}",
@@ -249,8 +251,8 @@ Proses Transaksi
                     name: 'DT_RowIndex'
                 },
                 {
-                    data: 'nama',
-                    name: 'nama'
+                    data: 'name',
+                    name: 'name'
                 },
                 {
                     data: 'satuan',
@@ -287,6 +289,7 @@ Proses Transaksi
             let satuan = $('#satuan').val();
             let harga = $('#harga').val();
             let qty = $('#qty').val();
+            let ket = $('#ket').val();
             if (nama == '' || nama == null) {
                 $('#btntambah').html('Tambah')
                 $('#btntambah').prop('disabled', false);
@@ -312,7 +315,8 @@ Proses Transaksi
                         'nama': nama,
                         'satuan': satuan,
                         'harga': harga,
-                        'qty': qty
+                        'qty': qty,
+                        'ket': ket
                     },
                     dataType: "json",
                     success: function(response) {

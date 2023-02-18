@@ -191,8 +191,8 @@ Proses Transaksi Pelunasan
                     name: 'DT_RowIndex'
                 },
                 {
-                    data: 'nama',
-                    name: 'nama'
+                    data: 'name',
+                    name: 'name'
                 },
                 {
                     data: 'satuan',
@@ -269,8 +269,8 @@ Proses Transaksi Pelunasan
                                     name: 'DT_RowIndex'
                                 },
                                 {
-                                    data: 'nama',
-                                    name: 'nama'
+                                    data: 'name',
+                                    name: 'name'
                                 },
                                 {
                                     data: 'satuan',

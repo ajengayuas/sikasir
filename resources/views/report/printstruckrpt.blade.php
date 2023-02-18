@@ -38,7 +38,7 @@ Struck
                 </tr>
                 @foreach ($data as $item)
                 <tr>
-                    <td>{{ $item->nama }}</td>
+                    <td align="left">{{ $item->nama }} {{ $item->ket }}</td>
                     <td align="right">{{ number_format($item->qty, 0, '.', ',') }}</td>
                     <td>{{ $item->satuan }}</td>
                     <td align="right">{{ number_format($item->harga, 0, '.', ',') }}</td>
