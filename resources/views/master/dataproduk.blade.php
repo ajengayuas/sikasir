@@ -26,6 +26,7 @@ Data Produk
                             <th>Nama Produk</th>
                             <th>Harga Beli</th>
                             <th>Harga Jual</th>
+                            <th>Satuan</th>
                             <th>Qty Pcs</th>
                             <th>Harga Beli/Pcs</th>
                             <th>Harga Jual/Pcs</th>
@@ -69,25 +70,30 @@ Data Produk
                                     <input type="text" class="form-control" id="nama" placeholder="Nama Produk" name="nama" style="width:250px;">
                                 </div>
                                 <div class="form-group">
-                                    <label>Harga Beli/Pack</label>
+                                    <label>Satuan</label>
+                                    {!! Form::select('sat', $sat,$uom, array('class' => 'form-control', 'id'=>'uom', 'style'=>'width:250px;')) !!}
+                                </div>
+                                <div class="form-group">
+                                    <label>Harga Beli</label>
                                     <input type="number" class="form-control" id="hargabeli" placeholder="Harga Beli" min=0 name="hargabeli" style="width:250px;">
                                 </div>
                                 <div class="form-group">
-                                    <label>Harga Jual/Pack</label>
+                                    <label>Harga Jual</label>
                                     <input type="number" class="form-control" id="hargajual" placeholder="Harga Jual" min=0 name="hargajual" style="width:250px;">
                                 </div>
                             </td>
                             <td style="padding-left:60px">
+                                <br><br><br>
                                 <div class="form-group">
-                                    <label>Qty Per Pack</label>
-                                    <input type="number" class="form-control" id="qtypcs" placeholder="Qty Per Pack" name="qtypcs" value=0 min=0 style="width:150px;">
+                                    <label id="qtypcslbl">Qty Per Pcs</label>
+                                    <input type="number" class="form-control" id="qtypcs" placeholder="Qty Per Pcs" name="qtypcs" value=0 min=0 style="width:150px;">
                                 </div>
                                 <div class="form-group">
-                                    <label for="InputHargaBeliPcs">Harga Beli/Pcs</label>
+                                    <label id="hargabelipcslbl">Harga Beli/Pcs</label>
                                     <input type="number" class="form-control" id="hargabelipcs" min=0 placeholder="Harga Beli Per Pcs" name="hargabelipcs" readonly style="width:250px;">
                                 </div>
                                 <div class="form-group">
-                                    <label for="InputHargaJualPcs">Harga Jual/Pcs</label>
+                                    <label id="hargajualpcslbl">Harga Jual/Pcs</label>
                                     <input type="number" class="form-control" id="hargajualpcs" min=0 placeholder="Harga Jual Per Pcs" name="hargajualpcs" style="width:250px;">
                                 </div>
                             </td>
@@ -111,6 +117,47 @@ Data Produk
             headers: {
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             }
+        });
+
+        $('#uom').change(function() {
+            let satuan = $('#uom').val()
+            $.ajax({
+                url: "{!! route('getqtyunit') !!}",
+                type: 'get',
+                data: {
+                    "_token": "{{ csrf_token() }}",
+                    satuan: satuan
+                },
+                dataType: 'json',
+                success: function(response) {
+                    if ($('#uom').val() == "Pcs") {
+                        $('#qtypcs').hide()
+                        $('#hargabelipcs').hide()
+                        $('#hargajualpcs').hide()
+                        $('#qtypcslbl').hide()
+                        $('#hargabelipcslbl').hide()
+                        $('#hargajualpcslbl').hide()
+                    } else if ($('#uom').val() != "Pack" && $('#uom').val() != "Pcs") {
+                        $('#qtypcs').val(response.data.qty)
+                        $('#qtypcs').get(0).disabled = true
+                        $('#qtypcs').show()
+                        $('#hargabelipcs').show()
+                        $('#hargajualpcs').show()
+                        $('#qtypcslbl').show()
+                        $('#hargabelipcslbl').show()
+                        $('#hargajualpcslbl').show()
+                    } else {
+                        $('#qtypcs').show()
+                        $('#qtypcs').val('')
+                        $('#qtypcs').get(0).disabled = false
+                        $('#hargabelipcs').show()
+                        $('#hargajualpcs').show()
+                        $('#qtypcslbl').show()
+                        $('#hargabelipcslbl').show()
+                        $('#hargajualpcslbl').show()
+                    }
+                }
+            });
         });
 
         $("#hargabeli, #qtypcs").keyup(function() {
@@ -147,6 +194,10 @@ Data Produk
                     name: 'hargajual'
                 },
                 {
+                    data: 'satuan',
+                    name: 'satuan'
+                },
+                {
                     data: 'qtypcs',
                     render: $.fn.dataTable.render.number(',', '.', 0, ''),
                     name: 'qtypcs'
@@ -180,6 +231,14 @@ Data Produk
             $('#hargabelipcs').val('');
             $('#hargajual').val('');
             $('#hargajualpcs').val('');
+            $('#uom').val('');
+            $('#qtypcs').show()
+            $('#qtypcs').get(0).disabled = false
+            $('#hargabelipcs').show()
+            $('#hargajualpcs').show()
+            $('#qtypcslbl').show()
+            $('#hargabelipcslbl').show()
+            $('#hargajualpcslbl').show()
             $('#exampleModalLabel').text('Tambah Produk');
             $('#addproduk').modal({
                 show: true,
@@ -194,10 +253,20 @@ Data Produk
             let kode = $('#kode').val();
             let nama = $('#nama').val();
             let beli = $('#hargabeli').val();
-            let belipcs = $('#hargabelipcs').val();
             let jual = $('#hargajual').val();
-            let jualpcs = $('#hargajualpcs').val();
-            let qtypcs = $('#qtypcs').val();
+            let satuan = $('#uom').val();
+            let belipcs = 0;
+            let jualpcs = 0;
+            let qtypcs = 0;
+            if ($('#uom').val() == "Pcs") {
+                belipcs = $('#hargabeli').val();
+                jualpcs = $('#hargajual').val();
+                qtypcs = 1;
+            } else {
+                belipcs = $('#hargabelipcs').val();
+                jualpcs = $('#hargajualpcs').val();
+                qtypcs = $('#qtypcs').val();
+            }
             if (nama == '' || nama == null) {
                 $('#btnsimpan').html('Simpan')
                 $('#btnsimpan').prop('disabled', false);
@@ -206,7 +275,7 @@ Data Produk
                 $('#btnsimpan').html('Simpan')
                 $('#btnsimpan').prop('disabled', false);
                 notifalert('Harga Beli');
-            } else if (belipcs == '' || belipcs == null) {
+            } else if (belipcs == '' || belipcs == null && $('#uom').val() != "Pcs") {
                 $('#btnsimpan').html('Simpan')
                 $('#btnsimpan').prop('disabled', false);
                 notifalert('Harga Beli Pcs');
@@ -214,11 +283,15 @@ Data Produk
                 $('#btnsimpan').html('Simpan')
                 $('#btnsimpan').prop('disabled', false);
                 notifalert('Harga Jual');
-            } else if (jualpcs == '' || jualpcs == null) {
+            } else if (satuan == '' || satuan == null) {
+                $('#btnsimpan').html('Simpan')
+                $('#btnsimpan').prop('disabled', false);
+                notifalert('Satuan');
+            } else if (jualpcs == '' || jualpcs == null && $('#uom').val() != "Pcs") {
                 $('#btnsimpan').html('Simpan')
                 $('#btnsimpan').prop('disabled', false);
                 notifalert('Harga Jual Pcs');
-            } else if (qtypcs == '' || qtypcs == null) {
+            } else if (qtypcs == '' || qtypcs == null && $('#uom').val() != "Pcs") {
                 $('#btnsimpan').html('Simpan')
                 $('#btnsimpan').prop('disabled', false);
                 notifalert('Quantity Pcs');
@@ -235,7 +308,8 @@ Data Produk
                         'hargabelipcs': belipcs,
                         'hargajual': jual,
                         'hargajualpcs': jualpcs,
-                        'qtypcs': qtypcs
+                        'qtypcs': qtypcs,
+                        'satuan': satuan
                     },
                     dataType: "json",
                     success: function(response) {
@@ -265,6 +339,8 @@ Data Produk
                             text: 'Cek Data',
                             icon: 'error'
                         });
+                        $('#btnsimpan').html('Simpan');
+                        $('#btnsimpan').prop('disabled', false);
                         return;
                     }
                 });
@@ -274,7 +350,7 @@ Data Produk
         $('body').on('click', '#btnedit', function() {
             $('#exampleModalLabel').text('Edit Produk');
             let id = $(this).attr('data-id');
-            console.log(id)
+            console.log('cek', $(this).attr('data-id'))
             $.ajax({
                 type: "post",
                 url: "{!! route('editproduk') !!}",
@@ -289,8 +365,7 @@ Data Produk
                     $('#kode').val(dataprod.kode);
                     $('#nama').val(dataprod.nama);
                     $('#qtypcs').val(dataprod.qtypcs);
-                    $('#qty1').val(dataprod.qtypcs);
-                    $('#qty2').val(1);
+                    $('#uom').val(dataprod.satuan);
                     $('#hargabeli').val(dataprod.hargabeli);
                     $('#hargabelipcs').val(dataprod.hargabelipcs);
                     $('#hargajual').val(dataprod.hargajual);

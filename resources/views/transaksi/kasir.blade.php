@@ -31,9 +31,8 @@ Proses Transaksi
                                     </select>
                                 </td>
                                 <td>
-                                    <select class="form-control select2" id="satuan" name="satuan" style="width: 100px;">
-                                        <option value="pcs">PCS</option>
-                                        <option value="pack">PACK</option>
+                                    <select class="form-control select2" id="satuan" name="satuan">
+                                        <option value="Pcs">Pcs</option>
                                     </select>
                                 </td>
                                 <td>
@@ -206,10 +205,10 @@ Proses Transaksi
                 },
                 dataType: 'json',
                 success: function(response) {
-                    if (sat == "pack") {
-                        $('#harga').val(response['data'][0].hargajual);
-                    } else {
+                    if (sat == "Pcs") {
                         $('#harga').val(response['data'][0].hargajualpcs);
+                    } else {
+                        $('#harga').val(response['data'][0].hargajual);
                     }
                     $('#btntambah').html('Tambah');
                     $('#btntambah').prop('disabled', false);
@@ -221,9 +220,8 @@ Proses Transaksi
             $('#btntambah').html('<i class="fas fa-hourglass"></i> Please Wait')
             $('#btntambah').prop('disabled', true);
             var id = $(this).val();
-            var sat = $('#satuan').val();
             $.ajax({
-                url: "{!! route('dataharga') !!}",
+                url: "{!! route('getuom') !!}",
                 type: 'get',
                 data: {
                     "_token": "{{ csrf_token() }}",
@@ -231,13 +229,31 @@ Proses Transaksi
                 },
                 dataType: 'json',
                 success: function(response) {
-                    if (sat == "pack") {
-                        $('#harga').val(response['data'][0].hargajual);
-                    } else {
-                        $('#harga').val(response['data'][0].hargajualpcs);
+                    if (response[0].text != "Pcs") {
+                        $('#satuan').find('option').not(':first').remove();
+                        var option = "<option value='" + response[0].id + "'>" + response[0].text + "</option>";
+                        $("#satuan").append(option);
                     }
-                    $('#btntambah').html('Tambah');
-                    $('#btntambah').prop('disabled', false);
+                    $.ajax({
+                        url: "{!! route('dataharga') !!}",
+                        type: 'get',
+                        data: {
+                            "_token": "{{ csrf_token() }}",
+                            id: id
+                        },
+                        dataType: 'json',
+                        success: function(response) {
+                            var sat = $('#satuan').val();
+                            console.log('cek satuan', sat);
+                            if (sat == "Pcs") {
+                                $('#harga').val(response['data'][0].hargajualpcs);
+                            } else {
+                                $('#harga').val(response['data'][0].hargajual);
+                            }
+                            $('#btntambah').html('Tambah');
+                            $('#btntambah').prop('disabled', false);
+                        }
+                    });
                 }
             });
         });
@@ -334,6 +350,7 @@ Proses Transaksi
                                 $('#harga').val('');
                                 $('#qty').val(1);
                                 $('#nama').empty();
+                                $('#ket').val('');
                                 $('#btntambah').html('Tambah')
                                 $('#btntambah').prop('disabled', false);
                             } else {

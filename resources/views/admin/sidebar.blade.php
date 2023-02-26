@@ -56,6 +56,16 @@
                         </li>
                         @endcan
                     </ul>
+                    <ul class="nav nav-treeview">
+                        @can('unit-list')
+                        <li class="nav-item">
+                            <a href="{{ route('masteruom') }}" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Data Satuan</p>
+                            </a>
+                        </li>
+                        @endcan
+                    </ul>
                 </li>
                 <li class="nav-item">
                     <a href="#" class="nav-link active">

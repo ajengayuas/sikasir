@@ -14,8 +14,9 @@
                         <tr>
                             <th>No.</th>
                             <th>Nama Produk</th>
+                            <th>Harga Jual</th>
+                            <th>Satuan</th>
                             <th>Harga Jual Per Pcs</th>
-                            <th>Harga Jual Per Pack</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -51,14 +52,18 @@
                     name: 'nama'
                 },
                 {
-                    data: 'hargajualpcs',
-                    render: $.fn.dataTable.render.number(',', '.', 0, ''),
-                    name: 'hargajualpcs'
-                },
-                {
                     data: 'hargajual',
                     render: $.fn.dataTable.render.number(',', '.', 0, ''),
                     name: 'hargajual'
+                },
+                {
+                    data: 'satuan',
+                    name: 'satuan'
+                },
+                {
+                    data: 'hargajualpcs',
+                    render: $.fn.dataTable.render.number(',', '.', 0, ''),
+                    name: 'hargajualpcs'
                 },
             ]
         });

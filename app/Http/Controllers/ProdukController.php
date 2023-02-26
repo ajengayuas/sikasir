@@ -6,8 +6,10 @@ use App\Models\DataKasir;
 use Illuminate\Http\Request;
 use App\Models\DataProduk;
 use App\Models\DataTempKasir;
+use App\Models\DataUnit;
 use Yajra\Datatables\Datatables;
 use Illuminate\Support\Facades\Session;
+use Spatie\Permission\Models\Role;
 
 class ProdukController extends Controller
 {
@@ -21,7 +23,15 @@ class ProdukController extends Controller
 
     public function index()
     {
-        return view('master.dataproduk');
+        $sat = DataUnit::where('aktif', '1')->get()->pluck('satuan', 'satuan')->all();
+        $uom = '';
+        return view('master.dataproduk', compact('sat', 'uom'));
+    }
+
+    public function getqtyunit(Request $request)
+    {
+        $dataunit = DataUnit::where('satuan', $request->satuan)->first();
+        return response()->json(['status' => 'success', 'data' => $dataunit], 200);
     }
 
     public function listproduk(Request $request)
@@ -65,6 +75,7 @@ class ProdukController extends Controller
             'hargabelipcs' => $request->hargabelipcs,
             'hargajual'   => $request->hargajual,
             'hargajualpcs' => $request->hargajualpcs,
+            'satuan' => $request->satuan,
             'aktif' => 1,
             'created_at' => date('Y-m-d H:i:s'),
             'created_by' => $updatedby
@@ -81,6 +92,7 @@ class ProdukController extends Controller
     public function edit(Request $request)
     {
         $dataprod = DataProduk::find($request->id);
+        // $datasat = DataUnit::find($request->satuan);
         return response()->json(['status' => 'success', 'data' => $dataprod], 200);
     }
 
@@ -101,6 +113,7 @@ class ProdukController extends Controller
             'hargabelipcs' => $request->hargabelipcs,
             'hargajual' => $request->hargajual,
             'hargajualpcs' => $request->hargajualpcs,
+            'satuan' => $request->satuan,
             'aktif' => 1,
             'updated_at' => date('Y-m-d H:i:s'),
             'updated_by' => $updatedby

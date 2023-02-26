@@ -11,6 +11,7 @@ use App\Http\Controllers\KasirController;
 use App\Http\Controllers\ProdukController;
 use App\Http\Controllers\LunasController;
 use App\Http\Controllers\ReportController;
+use App\Http\Controllers\UnitController;
 
 /*
 |--------------------------------------------------------------------------
@@ -51,15 +52,24 @@ Route::group(['middleware' => ['auth']], function () {
     Route::post('/hapusrole', [RoleController::class, 'destroy'])->name('hapusrole');
 
     Route::get('/produk', [ProdukController::class, 'index'])->name('masterdata');
+    Route::get('/getqtyunit', [ProdukController::class, 'getqtyunit'])->name('getqtyunit');
     Route::get('/dataproduk', [ProdukController::class, 'listproduk'])->name('dataproduk');
     Route::post('/simpanproduk', [ProdukController::class, 'store'])->name('simpanproduk');
     Route::post('/updateproduk', [ProdukController::class, 'update'])->name('updateproduk');
     Route::post('/editproduk', [ProdukController::class, 'edit'])->name('editproduk');
     Route::post('/hapusproduk', [ProdukController::class, 'destroy'])->name('hapusproduk');
 
+    Route::get('/uom', [UnitController::class, 'index'])->name('masteruom');
+    Route::get('/datauom', [UnitController::class, 'listunit'])->name('datauom');
+    Route::post('/simpanuom', [UnitController::class, 'store'])->name('simpanuom');
+    Route::post('/updateuom', [UnitController::class, 'update'])->name('updateuom');
+    Route::post('/edituom', [UnitController::class, 'edit'])->name('edituom');
+    Route::post('/hapusuom', [UnitController::class, 'destroy'])->name('hapusuom');
+
     Route::get('/kasir', [KasirController::class, 'index'])->name('datakasir');
     Route::post('/listproduk', [KasirController::class, 'listproduk'])->name('getproduk');
     Route::get('/getharga', [KasirController::class, 'getharga'])->name('dataharga');
+    Route::get('/getuom', [KasirController::class, 'getuom'])->name('getuom');
     Route::get('/listtempkasir', [KasirController::class, 'listtempkasir'])->name('datatempkasir');
     Route::post('/simpantempkasir', [KasirController::class, 'storetemp'])->name('tempkasir');
     Route::post('/hapustempkasir', [KasirController::class, 'destroy'])->name('hapustempkasir');
@@ -82,7 +92,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('/rptdetailpenjualan', [ReportController::class, 'detail'])->name('dtlpenjualan');
     Route::get('/detailpenjualan', [ReportController::class, 'detailjual'])->name('detailpenjualan');
     Route::get('/detailjual', [ReportController::class, 'viewdetailjual'])->name('detailjual');
-    Route::get('/cetakrpt', [ReportController::class, 'cetak'])->name('cetakrpt');
+    Route::get('/cetakrpt/{id}', [ReportController::class, 'cetak'])->name('cetakrpt');
     Route::get('/datakeu', [ReportController::class, 'viewdatakeu'])->name('datakeu');
     Route::get('/listdatakeu', [ReportController::class, 'listdatakeu'])->name('listdatakeu');
     Route::get('/kredit', [ReportController::class, 'viewkredit'])->name('kredit');

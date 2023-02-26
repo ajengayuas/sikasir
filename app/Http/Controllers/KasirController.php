@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\DB;
 use App\Models\DataKasir;
 use App\Models\DataProduk;
 use App\Models\DataTempKasir;
+use App\Models\DataUnit;
 use Yajra\Datatables\Datatables;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Str;
@@ -24,6 +25,22 @@ class KasirController extends Controller
     public function index()
     {
         return view('transaksi.kasir');
+    }
+
+    public function getuom(Request $request)
+    {
+        $dataprd = DataProduk::find($request->id);
+        $uom = DataUnit::where('aktif', '1')
+            ->where('satuan', $dataprd->satuan)
+            ->get();
+        $response = array();
+        foreach ($uom as $data) {
+            $response[] = array(
+                "id" => $data->satuan,
+                "text" => $data->satuan
+            );
+        }
+        return response()->json($response);
     }
 
     public function listproduk(Request $request)
