@@ -61,7 +61,7 @@ class MenuController extends Controller
             $status = ['title' => 'Gagal!', 'status' => 'error', 'message' => 'Nama Sudah Tersedia'];
             return response()->json($status, 200);
         }
-        $cek = Menu::where('alias', $request->alias)->where('aktif', 1)->first();
+        $cek = Menu::where('alias', strtolower($request->alias))->where('aktif', 1)->first();
         if ($cek != null) {
             $status = ['title' => 'Gagal!', 'status' => 'error', 'message' => 'Alias Sudah Tersedia'];
             return response()->json($status, 200);
@@ -69,16 +69,16 @@ class MenuController extends Controller
         DB::beginTransaction();
         $savemenu = Menu::insert([
             'mnname' => $request->mnname,
-            'alias'   => $request->alias,
+            'alias'   => strtolower($request->alias),
             'aktif'    => 1,
             'created_at' => date('Y-m-d H:i:s'),
             'created_by' => $created_by
         ]);
-        $nmperm1 = $request->alias . '-list';
-        $nmperm2 = $request->alias . '-create';
-        $nmperm3 = $request->alias . '-edit';
-        $nmperm4 = $request->alias . '-delete';
-        $nmperm5 = $request->alias . '-print';
+        $nmperm1 = strtolower($request->alias) . '-list';
+        $nmperm2 = strtolower($request->alias) . '-create';
+        $nmperm3 = strtolower($request->alias) . '-edit';
+        $nmperm4 = strtolower($request->alias) . '-delete';
+        $nmperm5 = strtolower($request->alias) . '-print';
         $savepermission1 = Permissions::insert([
             'name' => $nmperm1,
             'guard_name'   => 'web',
@@ -141,24 +141,23 @@ class MenuController extends Controller
             $status = ['title' => 'Gagal!', 'status' => 'error', 'message' => 'Nama Sudah Tersedia'];
             return response()->json($status, 200);
         }
-        $cek = Menu::where('alias', $request->alias)->where('aktif', 1)->first();
-        if ($cek != null && $cek->alias != $request->alias) {
+        $cek = Menu::where('alias', strtolower($request->alias))->where('aktif', 1)->first();
+        if ($cek != null && $cek->alias != strtolower($request->alias)) {
             $status = ['title' => 'Gagal!', 'status' => 'error', 'message' => 'Alias Sudah Tersedia'];
             return response()->json($status, 200);
         }
         $ceknama = Menu::where('id', $request->id)->where('aktif', 1)->first();
-        $perm1 = $ceknama->alias . '-list';
-        $perm2 = $ceknama->alias . '-create';
-        $perm3 = $ceknama->alias . '-edit';
-        $perm4 = $ceknama->alias . '-delete';
-        $perm5 = $ceknama->alias . '-print';
+        $perm1 = strtolower($ceknama->alias) . '-list';
+        $perm2 = strtolower($ceknama->alias) . '-create';
+        $perm3 = strtolower($ceknama->alias) . '-edit';
+        $perm4 = strtolower($ceknama->alias) . '-delete';
+        $perm5 = strtolower($ceknama->alias) . '-print';
         $cekperm = Permissions::select('permissions.*', 'role_has_permissions.*')
             ->join('role_has_permissions', 'permissions.id', 'role_has_permissions.permission_id')
             ->whereIn('permissions.name', array($perm1, $perm2, $perm3, $perm4, $perm5))
             ->first();
         $getalias = Menu::where('id', $request->id)->where('aktif', 1)->first();
-        // dd($cekperm, $getalias, $request);
-        if ($cekperm && $getalias->alias != $request->alias) {
+        if ($cekperm && $getalias->alias != strtolower($request->alias)) {
             $status = ['title' => 'Gagal!', 'status' => 'error', 'message' => 'Menu Sudah Dipakai'];
             return response()->json($status, 200);
         }
@@ -168,13 +167,13 @@ class MenuController extends Controller
         $savepermission4 = false;
         $savepermission5 = false;
         $deleteperm = false;
-        if ($getalias->alias != $request->alias) {
+        if ($getalias->alias != strtolower($request->alias)) {
             $deleteperm = Permissions::whereIn('name', array($perm1, $perm2, $perm3, $perm4, $perm5))->delete();
-            $nmperm1 = $request->alias . '-list';
-            $nmperm2 = $request->alias . '-create';
-            $nmperm3 = $request->alias . '-edit';
-            $nmperm4 = $request->alias . '-delete';
-            $nmperm5 = $request->alias . '-print';
+            $nmperm1 = strtolower($request->alias) . '-list';
+            $nmperm2 = strtolower($request->alias) . '-create';
+            $nmperm3 = strtolower($request->alias) . '-edit';
+            $nmperm4 = strtolower($request->alias) . '-delete';
+            $nmperm5 = strtolower($request->alias) . '-print';
             $savepermission1 = Permissions::insert([
                 'name' => $nmperm1,
                 'guard_name'   => 'web',
@@ -216,7 +215,7 @@ class MenuController extends Controller
 
         $updatemenu = Menu::where('id', $request->id)->update([
             'mnname' => $request->mnname,
-            'alias' => $request->alias,
+            'alias' => strtolower($request->alias),
             'updated_at' => date('Y-m-d H:i:s'),
             'updated_by' => $created_by
         ]);
@@ -236,11 +235,11 @@ class MenuController extends Controller
         DB::beginTransaction();
         $updatedby = $request->user()->email;
         $ceknama = Menu::where('id', $request->id)->where('aktif', 1)->first();
-        $perm1 = $ceknama->alias . '-list';
-        $perm2 = $ceknama->alias . '-create';
-        $perm3 = $ceknama->alias . '-edit';
-        $perm4 = $ceknama->alias . '-delete';
-        $perm5 = $ceknama->alias . '-print';
+        $perm1 = strtolower($ceknama->alias) . '-list';
+        $perm2 = strtolower($ceknama->alias) . '-create';
+        $perm3 = strtolower($ceknama->alias) . '-edit';
+        $perm4 = strtolower($ceknama->alias) . '-delete';
+        $perm5 = strtolower($ceknama->alias) . '-print';
         $cekperm = Permissions::select('permissions.*', 'role_has_permissions.*')
             ->join('role_has_permissions', 'permissions.id', 'role_has_permissions.permission_id')
             ->whereIn('permissions.name', array($perm1, $perm2, $perm3, $perm4, $perm5))

@@ -193,9 +193,7 @@ Proses Transaksi
             $('#btntambah').html('<i class="fas fa-hourglass"></i> Please Wait')
             $('#btntambah').prop('disabled', true);
             var sat = $(this).val();
-            console.log('sat', sat);
             var id = $('#nama').val();
-            console.log('id', id);
             $.ajax({
                 url: "{!! route('dataharga') !!}",
                 type: 'get',
@@ -205,7 +203,7 @@ Proses Transaksi
                 },
                 dataType: 'json',
                 success: function(response) {
-                    if (sat == "Pcs") {
+                    if (sat.toLowerCase() == "pcs") {
                         $('#harga').val(response['data'][0].hargajualpcs);
                     } else {
                         $('#harga').val(response['data'][0].hargajual);
@@ -229,7 +227,7 @@ Proses Transaksi
                 },
                 dataType: 'json',
                 success: function(response) {
-                    if (response[0].text != "Pcs") {
+                    if (response[0].text.toLowerCase() != "pcs") {
                         $('#satuan').find('option').not(':first').remove();
                         var option = "<option value='" + response[0].id + "'>" + response[0].text + "</option>";
                         $("#satuan").append(option);
@@ -244,8 +242,7 @@ Proses Transaksi
                         dataType: 'json',
                         success: function(response) {
                             var sat = $('#satuan').val();
-                            console.log('cek satuan', sat);
-                            if (sat == "Pcs") {
+                            if (sat.toLowerCase() == "pcs") {
                                 $('#harga').val(response['data'][0].hargajualpcs);
                             } else {
                                 $('#harga').val(response['data'][0].hargajual);
@@ -383,7 +380,6 @@ Proses Transaksi
                 confirmButtonText: 'Hapus',
                 cancelButtonText: 'Batal'
             }).then((result) => {
-                console.log('result :>> ', result);
                 if (result.isConfirmed) {
                     $.ajax({
                         type: "post",
@@ -487,7 +483,6 @@ Proses Transaksi
             } else {
                 cekbokdp = false;
             }
-            console.log(cekbokdp);
             if (dbyr == '' || dbyr == []) {
                 $('#btnsimpan').html('Simpan')
                 $('#btnsimpan').prop('disabled', false);

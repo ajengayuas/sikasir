@@ -157,7 +157,6 @@ Data User
 
     $('body').on('click', '#btnedit', function() {
       let id = $(this).attr('data-id');
-      console.log(id)
       $.ajax({
         type: "post",
         url: "{!! route('edituser') !!}",

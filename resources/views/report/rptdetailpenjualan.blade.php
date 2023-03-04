@@ -243,7 +243,6 @@
             $('#dpbyr').text('');
             $('#hisbayar').text('');
             let noinv = $(this).attr('data-id');
-            console.log(noinv)
             $('#datatables2').DataTable({
                 order: [],
                 processing: true,
@@ -252,7 +251,6 @@
                     url: "{{ route('detailjual') }}",
                     data: function(d) {
                         d.inv = noinv
-                        console.log('cek', d.inv)
                     }
                 },
                 columns: [{

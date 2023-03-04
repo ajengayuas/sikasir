@@ -244,7 +244,6 @@ Detail Data Penjualan
             $('#dpbyr').text('');
             $('#hisbayar').text('');
             let noinv = $(this).attr('data-id');
-            console.log(noinv)
             $('#datatables2').DataTable({
                 order: [],
                 processing: true,
@@ -253,7 +252,6 @@ Detail Data Penjualan
                     url: "{{ route('detailjual') }}",
                     data: function(d) {
                         d.inv = noinv
-                        console.log(d.inv)
                     }
                 },
                 columns: [{

@@ -130,14 +130,14 @@ Data Produk
                 },
                 dataType: 'json',
                 success: function(response) {
-                    if ($('#uom').val() == "Pcs") {
+                    if ($('#uom').val().toLowerCase() == "pcs") {
                         $('#qtypcs').hide()
                         $('#hargabelipcs').hide()
                         $('#hargajualpcs').hide()
                         $('#qtypcslbl').hide()
                         $('#hargabelipcslbl').hide()
                         $('#hargajualpcslbl').hide()
-                    } else if ($('#uom').val() != "Pack" && $('#uom').val() != "Pcs") {
+                    } else if ($('#uom').val().toLowerCase() != "pack" && $('#uom').val().toLowerCase() != "pcs") {
                         $('#qtypcs').val(response.data.qty)
                         $('#qtypcs').get(0).disabled = true
                         $('#qtypcs').show()
@@ -258,7 +258,7 @@ Data Produk
             let belipcs = 0;
             let jualpcs = 0;
             let qtypcs = 0;
-            if ($('#uom').val() == "Pcs") {
+            if ($('#uom').val().toLowerCase() == "pcs") {
                 belipcs = $('#hargabeli').val();
                 jualpcs = $('#hargajual').val();
                 qtypcs = 1;
@@ -275,7 +275,7 @@ Data Produk
                 $('#btnsimpan').html('Simpan')
                 $('#btnsimpan').prop('disabled', false);
                 notifalert('Harga Beli');
-            } else if (belipcs == '' || belipcs == null && $('#uom').val() != "Pcs") {
+            } else if (belipcs == '' || belipcs == null && $('#uom').val().toLowerCase() != "pcs") {
                 $('#btnsimpan').html('Simpan')
                 $('#btnsimpan').prop('disabled', false);
                 notifalert('Harga Beli Pcs');
@@ -287,11 +287,11 @@ Data Produk
                 $('#btnsimpan').html('Simpan')
                 $('#btnsimpan').prop('disabled', false);
                 notifalert('Satuan');
-            } else if (jualpcs == '' || jualpcs == null && $('#uom').val() != "Pcs") {
+            } else if (jualpcs == '' || jualpcs == null && $('#uom').val().toLowerCase() != "pcs") {
                 $('#btnsimpan').html('Simpan')
                 $('#btnsimpan').prop('disabled', false);
                 notifalert('Harga Jual Pcs');
-            } else if (qtypcs == '' || qtypcs == null && $('#uom').val() != "Pcs") {
+            } else if (qtypcs == '' || qtypcs == null && $('#uom').val().toLowerCase() != "pcs") {
                 $('#btnsimpan').html('Simpan')
                 $('#btnsimpan').prop('disabled', false);
                 notifalert('Quantity Pcs');
@@ -350,7 +350,6 @@ Data Produk
         $('body').on('click', '#btnedit', function() {
             $('#exampleModalLabel').text('Edit Produk');
             let id = $(this).attr('data-id');
-            console.log('cek', $(this).attr('data-id'))
             $.ajax({
                 type: "post",
                 url: "{!! route('editproduk') !!}",

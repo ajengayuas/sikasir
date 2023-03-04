@@ -234,7 +234,6 @@
             $('#dpbyr').text('');
             $('#hisbayar').text('');
             let noinv = $(this).attr('data-id');
-            console.log(noinv)
             $('#datatables2').DataTable({
                 order: [],
                 processing: true,
@@ -272,7 +271,6 @@
                 ],
                 "drawCallback": function(settings) {
                     let dataku = settings.json.data
-                    console.log('ini', dataku)
                     if (dataku == [] || dataku == '') {
                         return;
                     } else {

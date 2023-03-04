@@ -9,7 +9,6 @@ use App\Models\DataTempKasir;
 use App\Models\DataUnit;
 use Yajra\Datatables\Datatables;
 use Illuminate\Support\Facades\Session;
-use Spatie\Permission\Models\Role;
 
 class ProdukController extends Controller
 {
@@ -92,7 +91,6 @@ class ProdukController extends Controller
     public function edit(Request $request)
     {
         $dataprod = DataProduk::find($request->id);
-        // $datasat = DataUnit::find($request->satuan);
         return response()->json(['status' => 'success', 'data' => $dataprod], 200);
     }
 

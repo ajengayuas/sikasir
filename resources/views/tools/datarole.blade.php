@@ -265,20 +265,16 @@ Data Group Access
 
         $('#checkall').click(function(e) {
             if (this.checked) {
-                console.log('object :>> ', 'check');
                 $('input[type="checkbox"]').prop('checked', true);
             } else {
-                console.log('object :>> ', 'no');
                 $('input[type="checkbox"]').prop('checked', false);
             }
         });
 
         $('#checkalledit').click(function(e) {
             if (this.checked) {
-                console.log('object :>> ', 'check');
                 $('input[type="checkbox"]').prop('checked', true);
             } else {
-                console.log('object :>> ', 'no');
                 $('input[type="checkbox"]').prop('checked', false);
             }
         });
@@ -388,13 +384,11 @@ Data Group Access
             $('#btnupdate').html('<i class="fas fa-hourglass"></i> Please Wait')
             $('#btnupdate').prop('disabled', true);
             let id = $('#id').val();
-            console.log('cek id', id);
             let name = $('#nameedit').val();
             var permission = [];
             $("input:checkbox[name=perm]:checked").each(function() {
                 permission.push($(this).val());
             });
-            console.log('cek perm', permission);
             permissions = JSON.stringify(permission);
             let aktif = 1
             if (name == '' || name == null) {

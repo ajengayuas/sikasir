@@ -134,7 +134,7 @@ class KasirController extends Controller
             }
         }
         $gethargabeli = DataProduk::where('id', $request->nama)->first();
-        if ($request->satuan == 'pcs') {
+        if (strtolower($request->satuan) == 'pack') {
             $cekhargabeli = $gethargabeli->hargabelipcs;
         } else {
             $cekhargabeli = $gethargabeli->hargabeli;

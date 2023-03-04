@@ -55,7 +55,7 @@ class UnitController extends Controller
             return response()->json($status, 200);
         }
         $created_by = Session::get('usernamelogin');
-        $save = DataUnit::create([
+        $save = DataUnit::insert([
             'satuan'        => $request->satuan,
             'qty'        => $request->qty,
             'aktif' => 1,
