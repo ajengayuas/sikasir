@@ -227,8 +227,8 @@ Proses Transaksi
                 },
                 dataType: 'json',
                 success: function(response) {
+                    $('#satuan').find('option').not(':first').remove();
                     if (response[0].text.toLowerCase() != "pcs") {
-                        $('#satuan').find('option').not(':first').remove();
                         var option = "<option value='" + response[0].id + "'>" + response[0].text + "</option>";
                         $("#satuan").append(option);
                     }
