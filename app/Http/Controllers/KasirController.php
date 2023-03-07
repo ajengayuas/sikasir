@@ -101,7 +101,7 @@ class KasirController extends Controller
         if ($request->ket == null) {
             $keterangan = '';
         } else {
-            $keterangan = $request->ket;
+            $keterangan = strtolower($request->ket);
         }
 
         $created_by = Session::get('usernamelogin');
@@ -109,6 +109,7 @@ class KasirController extends Controller
             ->where('satuan', $request->satuan)
             ->where('harga', $request->harga)
             ->where('created_by', $created_by)
+            ->where('ket', $keterangan)
             ->where('aktif', 1)
             ->first();
         if ($cekdata != null) {
@@ -116,6 +117,7 @@ class KasirController extends Controller
                 ->where('satuan', $request->satuan)
                 ->where('harga', $request->harga)
                 ->where('created_by', $created_by)
+                ->where('ket', $keterangan)
                 ->where('aktif', 1)
                 ->update([
                     'qty' => $cekdata->qty + $request->qty,
@@ -123,7 +125,7 @@ class KasirController extends Controller
                     'amountbeli' => ($cekdata->qty + $request->qty) * $cekdata->hargabeli,
                     'updated_at' => date('Y-m-d H:i:s'),
                     'updated_by' => $created_by,
-                    'ket' => $cekdata->ket . ', ' . $keterangan
+                    'ket' => $cekdata->ket
                 ]);
             if ($update) {
                 $status = ['title' => 'Sukses!', 'status' => 'success', 'message' => 'Data Berhasil Disimpan'];
