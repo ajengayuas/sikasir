@@ -144,6 +144,7 @@ Data User
     });
 
     $('#btntambah').click(function(e) {
+      $('#id').val('');
       $('#name').val('');
       $('#email').val('');
       $('#password').val('');
