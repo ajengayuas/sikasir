@@ -4,7 +4,7 @@ Sistem Kasir is a website that used to record sales and processing financial rep
 
 -   Group Access can be customized as needed
 <p align="center">
-<img src="{{ asset('pict/user.PNG') }}">
+<img src="pict/user.PNG">
 </p>
 -   Kasir has a down payment method
 <p align="center">
