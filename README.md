@@ -14,7 +14,7 @@ Sistem Kasir is a website that used to record sales and processing financial rep
 <p align="center">
 <img src="pict/lunas.png">
 </p>
--   Print struck with paid or unpad status
+-   Print struck with paid or unpaid status
 <p align="center">
 <img src="pict/struck.png">
 </p>
