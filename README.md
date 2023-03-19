@@ -8,17 +8,17 @@ Sistem Kasir is a website that used to record sales and processing financial rep
 </p>
 -   Kasir has a down payment method
 <p align="center">
-<img src="{{ asset('pict/kasir.png') }}">
+<img src="pict/kasir.png">
 </p>
 -   Down payment settlement transactions that can make payment transactions more than 1 time
 <p align="center">
-<img src="{{ asset('pict/lunas.png') }}">
+<img src="pict/lunas.png">
 </p>
 -   Print struck with paid or unpad status
 <p align="center">
-<img src="{{ asset('pict/struck.png') }}">
+<img src="pict/struck.png">
 </p>
 -   Financial records and other supporting data
 <p align="center">
-<img src="{{ asset('pict/report.png') }}">
+<img src="pict/report.png">
 </p>
